@@ -7,5 +7,3 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 COPY ./ /frx/
 
 RUN /frx/build
-
-ENTRYPOINT ["/frx/start"]

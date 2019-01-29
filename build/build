@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Copyright (c) 2019 FEROX YT EIRL, www.ferox.yt <devops@ferox.yt>
+# Copyright (c) 2019 Jérémy WALTHER <jeremy.walther@golflima.net>
+# See <https://github.com/frxyt/docker-php-dev> for details.
+
+set -ex
+
+# Install required packages
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends \
     apt-utils \
@@ -8,20 +15,35 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-rec
     gnupg \
     libzip-dev \
     sshpass \
-    subversion
+    subversion \
     unzip \
     yarn
 
+# Install Composer
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 docker-php-ext-configure zip --with-zlib-dir
 docker-php-ext-install -j$(nproc) zip
 composer self-update
 
+# Install Node.js
 curl -sL https://deb.nodesource.com/setup_10.x | bash -
 DEBIAN_FRONTEND=noninteractive apt-get upgrade -y --fix-missing --no-install-recommends \
     nodejs
 
-apt-get clean -y && apt-get clean -y && apt-get autoclean -y && rm -r /var/lib/apt/lists/*
+# Change default entrypoint
+mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint-official
+ln -s /frx/start /usr/local/bin/docker-php-entrypoint
 
+# Clean APT cache
+apt-get clean -y && apt-get clean -y && apt-get autoclean -y && rm -r /var/lib/apt/lists/*
 rm -rf /frx/php*
+
+# Display versions
+cat /etc/debian_version
+php -v
+php -m
+composer -V
+node -v
+npm -v
+yarn --version

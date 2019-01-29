@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Copyright (c) 2019 FEROX YT EIRL, www.ferox.yt <devops@ferox.yt>
+# Copyright (c) 2019 Jérémy WALTHER <jeremy.walther@golflima.net>
+# See <https://github.com/frxyt/docker-php-dev> for details.
+
 # Stop on first error
 set -eE
 
@@ -12,6 +16,7 @@ trap 'trap_err $LINENO' ERR
 
 # Display version information
 echo "[PHP: $(php -v | grep ^PHP | cut -d' ' -f2)] [Composer: $(composer -V | grep ^Composer | cut -d' ' -f3)] [Node.js: $(node -v | tail -c +2)] [Yarn: $(yarn --version)]"
+echo "[FEROX PHP Dev: https://github.com/frxyt/docker-php-dev]"
 echo 
 # Init
 touch /frx/FRX_APT_GET_INSTALL
@@ -77,4 +82,5 @@ fi
 trap - ERR
 
 # Call official entrypoint of the PHP image
-/usr/local/bin/docker-php-entrypoint "$@"
+echo "Starting PHP with: '$@'"
+exec /usr/local/bin/docker-php-entrypoint-official "$@"
