@@ -22,6 +22,7 @@ echo
 touch /frx/FRX_APT_GET_INSTALL
 touch /frx/FRX_PHP_EXT_CONFIGURE
 touch /frx/FRX_PHP_EXT_INSTALL
+touch /frx/FRX_APACHE_ENABLE_MOD
 rm -f /frx/start.log
 touch /usr/local/etc/php/conf.d/zz-frx-php.ini
 
@@ -47,6 +48,7 @@ if [ -n "${FRX_APT_GET_INSTALL}" ]; then
     rm -r /var/lib/apt/lists/*
 fi
 
+# Configure required PHP extensions
 if [ -n "${FRX_PHP_EXT_CONFIGURE}" ]; then
     while read -r extension; do
         if [ -n "${extension}" ]; then
@@ -60,6 +62,7 @@ if [ -n "${FRX_PHP_EXT_CONFIGURE}" ]; then
     done <<< "${FRX_PHP_EXT_CONFIGURE}"
 fi
 
+# Install required PHP extensions
 if [ -n "${FRX_PHP_EXT_INSTALL}" ]; then
     for extension in ${FRX_PHP_EXT_INSTALL}; do
         if ! grep -q "${extension}" /frx/FRX_PHP_EXT_INSTALL; then
@@ -71,6 +74,7 @@ if [ -n "${FRX_PHP_EXT_INSTALL}" ]; then
     done
 fi
 
+# Configure php.ini
 if [ -n "${FRX_PHP_INI}" ]; then
     if ! grep -q "${FRX_PHP_INI}" /usr/local/etc/php/conf.d/zz-frx-php.ini; then
         echo -n "Adding settings to php.ini... "
@@ -79,6 +83,19 @@ if [ -n "${FRX_PHP_INI}" ]; then
     fi
 fi
 
+# Enable required Apache modules
+if [ -n "${FRX_APACHE_ENABLE_MOD}" ]; then
+    for module in ${FRX_APACHE_ENABLE_MOD}; do
+        if ! grep -q "${module}" /frx/FRX_APACHE_ENABLE_MOD; then
+            echo -n "Enabling Apache module '${module}'... "
+            a2enmod ${module} > /frx/start.log 2>&1
+            echo "${module}" >> /frx/FRX_APACHE_ENABLE_MOD
+            echo "[OK]"
+        fi
+    done
+fi
+
+# Remove error handling
 trap - ERR
 
 # Call official entrypoint of the PHP image

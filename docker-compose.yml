@@ -21,3 +21,6 @@ php:
       upload_max_filesize = 10M
       log_errors = true
       error_log = /var/log/php.log
+    - |
+      FRX_APACHE_ENABLE_MOD=
+      rewrite

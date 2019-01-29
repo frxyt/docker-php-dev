@@ -23,5 +23,4 @@ php:
     - |
       FRX_PHP_EXT_INSTALL=
       gd
-      pdo_mysql
 ```
