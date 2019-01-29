@@ -1,0 +1,25 @@
+php:
+  build: .
+  environment:
+    - |
+      FRX_APT_GET_INSTALL=
+      libfreetype6-dev
+      libgd-dev
+      libjpeg62-turbo-dev
+      libpng-dev
+    - |
+      FRX_PHP_EXT_CONFIGURE=
+      gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+    - |
+      FRX_PHP_EXT_INSTALL=
+      gd
+      pdo_mysql
+    - |
+      FRX_PHP_INI=
+      date.timezone = "Europe/Zurich"
+      max_input_vars = 10000
+      post_max_size = 20M
+      upload_max_filesize = 20M
+      log_errors = true
+      log_errors_max_len = 10240
+      error_log = /data/logs/error-build.log

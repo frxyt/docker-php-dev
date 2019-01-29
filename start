@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# Stop on first error
+set -eE
+
+# Handle errors
+trap_err() {
+    echo "[!] Error: /frx/start:$1"
+    cat /frx/start.log
+}
+trap 'trap_err $LINENO' ERR
+
+# Display version information
+echo "[PHP: $(php -v | grep ^PHP | cut -d' ' -f2)] [Composer: $(composer -V | grep ^Composer | cut -d' ' -f3)] [Node.js: $(node -v | tail -c +2)] [Yarn: $(yarn --version)]"
+echo 
+# Init
+touch /frx/FRX_APT_GET_INSTALL
+touch /frx/FRX_PHP_EXT_CONFIGURE
+touch /frx/FRX_PHP_EXT_INSTALL
+rm -f /frx/start.log
+touch /usr/local/etc/php/conf.d/zz-frx-php.ini
+
+# Install required packages
+if [ -n "${FRX_APT_GET_INSTALL}" ]; then
+    declare apt_get_updated=false
+    for package in ${FRX_APT_GET_INSTALL}; do
+        if ! grep -q "${package}" /frx/FRX_APT_GET_INSTALL; then
+            if [ ${apt_get_updated} = false ]; then
+                echo -n "Resynchronizing APT package index files... "
+                DEBIAN_FRONTEND=noninteractive apt-get update > /frx/start.log 2>&1
+                echo "[OK]"
+                apt_get_updated=true
+            fi
+            echo -n "Installing APT package '${package}'... "
+            DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends ${package} > /frx/start.log 2>&1
+            echo "${package}" >> /frx/FRX_APT_GET_INSTALL
+            echo "[OK]"
+        fi
+    done
+    apt-get clean -y -qq
+    apt-get autoclean -y -qq
+    rm -r /var/lib/apt/lists/*
+fi
+
+if [ -n "${FRX_PHP_EXT_CONFIGURE}" ]; then
+    while read -r extension; do
+        if [ -n "${extension}" ]; then
+            if ! grep -q "${extension}" /frx/FRX_PHP_EXT_CONFIGURE; then
+                echo -n "Configuring PHP extention '${extension}'... "
+                docker-php-ext-configure ${extension} > /frx/start.log 2>&1
+                echo "${extension}" >> /frx/FRX_PHP_EXT_CONFIGURE
+                echo "[OK]"
+            fi
+        fi
+    done <<< "${FRX_PHP_EXT_CONFIGURE}"
+fi
+
+if [ -n "${FRX_PHP_EXT_INSTALL}" ]; then
+    for extension in ${FRX_PHP_EXT_INSTALL}; do
+        if ! grep -q "${extension}" /frx/FRX_PHP_EXT_INSTALL; then
+            echo -n "Installing PHP extention '${extension}'... "
+            docker-php-ext-install -j$(nproc) ${extension} > /frx/start.log 2>&1
+            echo "${extension}" >> /frx/FRX_PHP_EXT_INSTALL
+            echo "[OK]"
+        fi
+    done
+fi
+
+if [ -n "${FRX_PHP_INI}" ]; then
+    if ! grep -q "${FRX_PHP_INI}" /usr/local/etc/php/conf.d/zz-frx-php.ini; then
+        echo -n "Adding settings to php.ini... "
+        echo "${FRX_PHP_INI}" > /usr/local/etc/php/conf.d/zz-frx-php.ini
+        echo "[OK]"
+    fi
+fi
+
+trap - ERR
+
+# Call official entrypoint of the PHP image
+/usr/local/bin/docker-php-entrypoint "$@"
