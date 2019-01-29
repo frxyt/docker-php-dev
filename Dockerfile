@@ -2,7 +2,7 @@
 # Copyright (c) 2019 Jérémy WALTHER <jeremy.walther@golflima.net>
 # See <https://github.com/frxyt/docker-php-dev> for details.
 
-ARG FRX_DOCKER_FROM=php:7.1-apache
+ARG FRX_DOCKER_FROM=php:apache
 FROM ${FRX_DOCKER_FROM}
 
 LABEL maintainer="Jérémy WALTHER <jeremy@ferox.yt>"
