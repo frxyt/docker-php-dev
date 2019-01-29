@@ -15,8 +15,8 @@ trap_err() {
 trap 'trap_err $LINENO' ERR
 
 # Display version information
-echo "[PHP: $(php -v | grep ^PHP | cut -d' ' -f2)] [Composer: $(composer -V | grep ^Composer | cut -d' ' -f3)] [Node.js: $(node -v | tail -c +2)] [Yarn: $(yarn --version)]"
 echo "[FEROX PHP Dev: https://github.com/frxyt/docker-php-dev]"
+echo "[PHP: $(php -v | grep ^PHP | cut -d' ' -f2)] [Composer: $(composer -V | grep ^Composer | cut -d' ' -f3)] [Node.js: $(node -v | tail -c +2)] [Yarn: $(yarn --version)]"
 echo 
 # Init
 touch /frx/FRX_APT_GET_INSTALL
