@@ -23,3 +23,5 @@ DEBIAN_FRONTEND=noninteractive apt-get upgrade -y --fix-missing --no-install-rec
     nodejs
 
 apt-get clean -y && apt-get clean -y && apt-get autoclean -y && rm -r /var/lib/apt/lists/*
+
+rm -rf /frx/php*
