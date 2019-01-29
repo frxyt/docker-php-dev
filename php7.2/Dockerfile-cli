@@ -1,5 +1,4 @@
-ARG FRX_DOCKER_FROM=php:cli
-FROM ${FRX_DOCKER_FROM}
+FROM php:7.2-cli
 
 LABEL maintainer="Jérémy WALTHER <jeremy@ferox.yt>"
 

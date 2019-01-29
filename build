@@ -1,0 +1,25 @@
+#!/bin/bash
+
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends \
+    apt-utils \
+    curl \
+    git \
+    gnupg \
+    libzip-dev \
+    sshpass \
+    subversion
+    unzip \
+    yarn
+
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+docker-php-ext-configure zip --with-zlib-dir
+docker-php-ext-install -j$(nproc) zip
+composer self-update
+
+curl -sL https://deb.nodesource.com/setup_10.x | bash -
+DEBIAN_FRONTEND=noninteractive apt-get upgrade -y --fix-missing --no-install-recommends \
+    nodejs
+
+apt-get clean -y && apt-get clean -y && apt-get autoclean -y && rm -r /var/lib/apt/lists/*
