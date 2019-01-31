@@ -18,6 +18,7 @@ trap 'trap_err $LINENO' ERR
 echo "[FEROX PHP Dev: https://github.com/frxyt/docker-php-dev]"
 echo "[PHP: $(php -v | grep ^PHP | cut -d' ' -f2)] [Composer: $(composer -V | grep ^Composer | cut -d' ' -f3)] [Node.js: $(node -v | tail -c +2)] [Yarn: $(yarn --version)]"
 echo 
+
 # Init
 touch /frx/FRX_APT_GET_INSTALL
 touch /frx/FRX_PHP_EXT_CONFIGURE
@@ -93,6 +94,15 @@ if [ -n "${FRX_APACHE_ENABLE_MOD}" ]; then
             echo "[OK]"
         fi
     done
+fi
+
+# Create Apache document root if needed
+if [ -n "${FRX_APACHE_DOCUMENT_ROOT}" ]; then
+    if [ ! -d ${FRX_APACHE_DOCUMENT_ROOT} ]; then
+        echo -n "Creating Apache document root '${FRX_APACHE_DOCUMENT_ROOT}'... "
+        mkdir -p ${FRX_APACHE_DOCUMENT_ROOT}
+        echo "[OK]"
+    fi
 fi
 
 # Remove error handling

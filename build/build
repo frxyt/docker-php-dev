@@ -31,6 +31,12 @@ curl -sL https://deb.nodesource.com/setup_10.x | bash -
 DEBIAN_FRONTEND=noninteractive apt-get upgrade -y --fix-missing --no-install-recommends \
     nodejs
 
+# Enable some configuration for Apache with environment variables
+if [ -f /etc/apache2/sites-enabled/000-default.conf -a -f /etc/apache2/envvars ]; then
+    sed -e 's/^\s*\(DocumentRoot\)\s*.*$/\1 ${FRX_APACHE_DOCUMENT_ROOT}/' -i /etc/apache2/sites-enabled/000-default.conf
+    echo -n ': ${FRX_APACHE_DOCUMENT_ROOT:=/var/www/html}\nexport FRX_APACHE_DOCUMENT_ROOT' >> /etc/apache2/envvars
+fi
+
 # Change default entrypoint
 mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint-official
 ln -s /frx/start /usr/local/bin/docker-php-entrypoint
