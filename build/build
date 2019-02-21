@@ -6,6 +6,9 @@
 
 set -ex
 
+# Get PHP version
+FRX_PHP_VERSION=$(php -v | grep ^PHP | cut -d' ' -f2)
+
 # Install required packages
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends \
@@ -18,6 +21,16 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-rec
     subversion \
     unzip \
     yarn
+
+# Install Xdebug
+pecl install xdebug$([[ "${FRX_PHP_VERSION}" =~ ^7.3 ]] && echo "-beta")
+docker-php-ext-enable xdebug
+cat > /usr/local/etc/php/php.ini <<'EOL'
+xdebug.remote_connect_back=${FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK}
+xdebug.remote_enable=${FRX_PHP_XDEBUG_REMOTE_ENABLE}
+xdebug.remote_host=${FRX_PHP_XDEBUG_REMOTE_HOST}
+xdebug.remote_port${FRX_PHP_XDEBUG_REMOTE_PORT}
+EOL
 
 # Install Composer
 curl -sS https://getcomposer.org/installer | php
