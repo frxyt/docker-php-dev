@@ -23,13 +23,21 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-rec
     yarn
 
 # Install Xdebug
-pecl install xdebug$([[ "${FRX_PHP_VERSION}" =~ ^7.3 ]] && echo "-beta")$([[ "${FRX_PHP_VERSION}" =~ ^5.6 ]] && echo "-2.5.5")
+if [[ "${FRX_PHP_VERSION}" =~ ^7.3 ]]; then
+    pecl install xdebug-beta
+elif [[ "${FRX_PHP_VERSION}" =~ ^5.6 ]]; then
+    pecl install xdebug-2.5.5
+else
+    pecl install xdebug
+fi
 docker-php-ext-enable xdebug
-cat >> /usr/local/etc/php/php.ini <<'EOL'
-xdebug.remote_connect_back=${FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK}
-xdebug.remote_enable=${FRX_PHP_XDEBUG_REMOTE_ENABLE}
-xdebug.remote_host=${FRX_PHP_XDEBUG_REMOTE_HOST}
-xdebug.remote_port=${FRX_PHP_XDEBUG_REMOTE_PORT}
+cat >> /usr/local/etc/php/conf.d/zz-frx-xdebug.ini <<'EOL'
+xdebug.max_nesting_level    = ${FRX_PHP_XDEBUG_MAX_NESTING_LEVEL}
+xdebug.remote_autostart     = ${FRX_PHP_XDEBUG_REMOTE_AUTOSTART}
+xdebug.remote_connect_back  = ${FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK}
+xdebug.remote_enable        = ${FRX_PHP_XDEBUG_REMOTE_ENABLE}
+xdebug.remote_host          = ${FRX_PHP_XDEBUG_REMOTE_HOST}
+xdebug.remote_port          = ${FRX_PHP_XDEBUG_REMOTE_PORT}
 EOL
 
 # Install Composer

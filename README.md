@@ -26,6 +26,10 @@ It comes with Composer, Node.js, Yarn, and Xdebug too.
 
 ## Variables
 
+### Configurable environment variables
+
+These environment variables can be overriden to change the default behavior of the image and adapt it to your needs:
+
 | Name                                 | Type      | Example                                                              | Description
 | :----------------------------------- | :-------- | :------------------------------------------------------------------- | :----------
 | `FRX_APACHE_ENABLE_MOD`              | `string`  | `rewrite`                                                            | Enable Apache module, module names can be separated by spaces or new lines.
@@ -36,10 +40,21 @@ It comes with Composer, Node.js, Yarn, and Xdebug too.
 | `FRX_PHP_EXT_ENABLE`                 | `string`  | `xdebug`                                                             | Enable PHP extension, extension names can be separated by spaces or new lines.
 | `FRX_PHP_EXT_INSTALL`                | `string`  | `gd`                                                                 | Install PHP extension, extension names can be separated by spaces or new lines.
 | `FRX_PHP_INI`                        | `string`  | `date.timezone = "Europe/Paris"`                                     | Add settings to `php.ini`, multiple settings can be separated by new lines.
-| `FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK` | `integer` | `0` (Off) / `1` (On)                                                 | Enable or disable Xdebug remote connect back functionnality, defauls to 0.
-| `FRX_PHP_XDEBUG_REMOTE_ENABLE`       | `integer` | `0` (Off) / `1` (On)                                                 | Enable or disable Xdebug remote functionnality, defauls to 1.
+| `FRX_PHP_XDEBUG_MAX_NESTING_LEVEL`   | `integer` | `256`                                                                | Max PHP call nested level used by Xdebug, defauls to `-1` (disabled).
+| `FRX_PHP_XDEBUG_REMOTE_AUTOSTART`    | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote auto connect functionnality, defauls to `1`.
+| `FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK` | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote connect back functionnality, defauls to `0`.
+| `FRX_PHP_XDEBUG_REMOTE_ENABLE`       | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote functionnality, defauls to `1`.
 | `FRX_PHP_XDEBUG_REMOTE_HOST`         | `string`  | `172.17.0.1`                                                         | Set remote IP address for Xdebug, defaults to Docker host IP address.
-| `FRX_PHP_XDEBUG_REMOTE_PORT`         | `integer` | `9000`                                                               | Set remote port number for Xdebug, defaults to 9000.
+| `FRX_PHP_XDEBUG_REMOTE_PORT`         | `integer` | `9000`                                                               | Set remote port number for Xdebug, defaults to `9000`.
+
+### Readonly environment variables
+
+Additionnaly, this image exposes some readonly variable that can be used in derived images:
+
+| Name                                 | Type      | Example                                                              | Description
+| :----------------------------------- | :-------- | :------------------------------------------------------------------- | :----------
+| `FRX_DOCKER_FROM`                    | `string`  | `php:7.3-apache`                                                     | Base official PHP image used to build the image.
+| `FRX_DOCKER_STARTED`                 | `integer` | `-1` *(error)* / `0` *(starting)* / `1` *(started)*                  | Indicate if the container is ready or not.
 
 ## Example
 

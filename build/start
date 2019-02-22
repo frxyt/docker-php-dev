@@ -9,6 +9,7 @@ set -eE
 
 # Handle errors
 trap_err() {
+    export FRX_DOCKER_STARTED=-1
     echo "[!] Error: /frx/start:$1"
     cat /frx/start.log
 }
@@ -29,11 +30,8 @@ touch /frx/FRX_PHP_EXT_INSTALL
 touch /usr/local/etc/php/conf.d/zz-frx-php.ini
 rm -f /frx/start.log
 
-# Set default values
-export FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK=${FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK:-0}
-export FRX_PHP_XDEBUG_REMOTE_ENABLE=${FRX_PHP_XDEBUG_REMOTE_ENABLE:-1}
-export FRX_PHP_XDEBUG_REMOTE_HOST=${FRX_PHP_XDEBUG_REMOTE_HOST:-host.docker.internal}
-export FRX_PHP_XDEBUG_REMOTE_PORT=${FRX_PHP_XDEBUG_REMOTE_PORT:-9000}
+# Indicate init is starting
+export FRX_DOCKER_STARTED=0
 
 # Install required packages
 if [ -n "${FRX_APT_GET_INSTALL}" ]; then
@@ -141,6 +139,9 @@ fi
 
 # Remove error handling
 trap - ERR
+
+# Indicate init is done
+export FRX_DOCKER_STARTED=1
 
 # Call official entrypoint of the PHP image
 echo "Starting PHP with: '$@'"
