@@ -17,6 +17,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-rec
     git \
     gnupg \
     libzip-dev \
+    rsync \
     sshpass \
     subversion \
     unzip \

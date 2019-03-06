@@ -5,7 +5,8 @@ just ask this image to install missing packages and extensions on runtime throug
 
 This image is able to install Debian packages, PHP extensions (and configure them), enable Apache modules, with only the use of environment variables.
 So, no need to create a `Dockerfile` for your develpment environment anymore.
-It comes with Composer, Node.js, Yarn, and Xdebug too.
+It comes with Composer, Node.js, Xdebug, and Yarn too.
+This image is also capable of highly increase performances on Docker for Mac/Windows too by enabling a cache for composer vendor path.
 
 * Docker Hub: https://hub.docker.com/r/frxyt/php-dev
 * GitHub: https://github.com/frxyt/docker-php-dev
@@ -35,6 +36,8 @@ These environment variables can be overriden to change the default behavior of t
 | `FRX_APACHE_ENABLE_MOD`              | `string`  | `rewrite`                                                            | Enable Apache module, module names can be separated by spaces or new lines.
 | `FRX_APACHE_DOCUMENT_ROOT`           | `string`  | `/var/www/html/public`                                               | Change Apache document root.
 | `FRX_APT_GET_INSTALL`                | `string`  | `libfreetype6-dev libgd-dev libjpeg62-turbo-dev libpng-dev`          | Install Debian packages, package names can be separated by spaces or new lines.
+| `FRX_COMPOSER_VENDOR_CACHE_ENABLE`   | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable cache for composer vendor path, defaults to `0`.
+| `FRX_COMPOSER_VENDOR_CACHE_PATH`     | `string`  | `vendor`, `app/vendor`                                               | Set the path of composer vendor path to cache.
 | `FRX_PECL_INSTALL`                   | `string`  | `xdebug`                                                             | Install PECL extension, extension names can be separated by spaces or new lines.
 | `FRX_PHP_EXT_CONFIGURE`              | `string`  | `gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/` | Configure PHP extension, multiple configurations can be separated by new lines.
 | `FRX_PHP_EXT_ENABLE`                 | `string`  | `xdebug`                                                             | Enable PHP extension, extension names can be separated by spaces or new lines.
@@ -85,26 +88,98 @@ php:
 To use this image with Symfony, you can simply use this sample `docker-compose.yml` file:
 
 ```yaml
-mysql:
-  image: mysql:5.7
-  environment:
-    - MYSQL_ROOT_PASSWORD=TBD
-    - MYSQL_DATABASE=TBD
-    - MYSQL_USER=TBD
-    - MYSQL_PASSWORD=TBD
-  volumes:
-    - ./var/lib/mysql:/var/lib/mysql:rw
+version: '3'
 
-php:
-  image: frxyt/php-dev:latest
-  environment:
-    - FRX_PHP_EXT_INSTALL=pcntl pdo_mysql
-    - FRX_APACHE_ENABLE_MOD=rewrite
-    - FRX_APACHE_DOCUMENT_ROOT=/var/www/html/public
-  links:
-    - mysql
-  ports:
-    - 127.0.0.1:80:80
-  volumes:
-    - ./:/var/www/html:rw
+networks:
+  backend:
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=TBD
+      - MYSQL_DATABASE=TBD
+      - MYSQL_USER=TBD
+      - MYSQL_PASSWORD=TBD
+    networks:
+      - backend
+    volumes:
+      - ./var/lib/mysql:/var/lib/mysql:rw
+
+  php:
+    image: frxyt/php-dev:latest
+    depends_on:
+      - mysql
+    environment:
+      - FRX_PHP_EXT_INSTALL=pcntl pdo_mysql
+      - FRX_APACHE_ENABLE_MOD=rewrite
+      - FRX_APACHE_DOCUMENT_ROOT=/var/www/html/public
+      - FRX_COMPOSER_VENDOR_CACHE_ENABLE=1
+    networks:
+      - backend
+    ports:
+      - 127.0.0.1:80:80
+    volumes:
+      - ./:/var/www/html:rw,cached
+      - ./vendor:/frx/composer/vendor:rw
+      - var:/var/www/html/var
+      - vendor:/var/www/html/vendor
+
+volumes:
+  var:
+  vendor:
+```
+
+## Build
+
+```sh
+docker build -f ./php5.6/Dockerfile-apache -t frxyt/php-dev:5.6-apache .
+docker build -f ./php5.6/Dockerfile-cli    -t frxyt/php-dev:5.6-cli    .
+docker build -f ./php5.6/Dockerfile-fpm    -t frxyt/php-dev:5.6-fpm    .
+
+docker build -f ./php7.0/Dockerfile-apache -t frxyt/php-dev:7.0-apache .
+docker build -f ./php7.0/Dockerfile-cli    -t frxyt/php-dev:7.0-cli    .
+docker build -f ./php7.0/Dockerfile-fpm    -t frxyt/php-dev:7.0-fpm    .
+
+docker build -f ./php7.1/Dockerfile-apache -t frxyt/php-dev:7.1-apache .
+docker build -f ./php7.1/Dockerfile-cli    -t frxyt/php-dev:7.1-cli    .
+docker build -f ./php7.1/Dockerfile-fpm    -t frxyt/php-dev:7.1-fpm    .
+
+docker build -f ./php7.2/Dockerfile-apache -t frxyt/php-dev:7.2-apache .
+docker build -f ./php7.2/Dockerfile-cli    -t frxyt/php-dev:7.2-cli    .
+docker build -f ./php7.2/Dockerfile-fpm    -t frxyt/php-dev:7.2-fpm    .
+
+docker build -f ./php7.3/Dockerfile-apache -t frxyt/php-dev:7.3-apache .
+docker build -f ./php7.3/Dockerfile-cli    -t frxyt/php-dev:7.3-cli    .
+docker build -f ./php7.3/Dockerfile-fpm    -t frxyt/php-dev:7.3-fpm    .
+```
+
+## License
+
+This project and images are published under the [MIT License](LICENSE).
+
+```
+MIT License
+
+Copyright (c) 2019 FEROX YT EIRL, www.ferox.yt <devops@ferox.yt>
+Copyright (c) 2019 Jérémy WALTHER <jeremy.walther@golflima.net>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```

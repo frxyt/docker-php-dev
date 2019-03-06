@@ -1,0 +1,4 @@
+#!/bin/bash
+echo -n "Synchronizing cached composer vendor path ($(pwd)/${FRX_COMPOSER_VENDOR_CACHE_PATH}) to host ... "
+rsync --delete -aq "$(pwd)/${FRX_COMPOSER_VENDOR_CACHE_PATH}/" /frx/composer/vendor/
+echo "[OK]"

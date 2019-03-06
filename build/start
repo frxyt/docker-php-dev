@@ -137,6 +137,16 @@ if [ -n "${FRX_APACHE_DOCUMENT_ROOT}" ]; then
     fi
 fi
 
+# Handle Composer cache
+if [ "${FRX_COMPOSER_VENDOR_CACHE_ENABLE}" == 1 ]; then
+    mkdir -p /frx/composer/vendor
+    mkdir -p "$(pwd)/${FRX_COMPOSER_VENDOR_CACHE_PATH}"
+    /frx/composer/vendor-from-host
+    echo "[i] Don't forget to mount these volumes: vendor:$(pwd)/${FRX_COMPOSER_VENDOR_CACHE_PATH}, ./${FRX_COMPOSER_VENDOR_CACHE_PATH}:/frx/composer/vendor"
+    echo "[i] To synchronize cached composer vendor path FROM the host, use: /frx/composer/vendor-from-host"
+    echo "[i] To synchronize cached composer vendor path TO the host, use:   /frx/composer/vendor-to-host"
+fi
+
 # Remove error handling
 trap - ERR
 
