@@ -25,3 +25,6 @@ php:
       FRX_APACHE_ENABLE_MOD=
       rewrite
     - FRX_APACHE_DOCUMENT_ROOT=/var/www/html/public
+    - |
+      FRX_SCRIPT_START=
+      chown www-data:www-data -R .

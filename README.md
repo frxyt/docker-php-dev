@@ -25,6 +25,24 @@ This image is also capable of highly increase performances on Docker for Mac/Win
 | 7.2         | `7.2-cli` | `7.2-apache`           | `7.2-fpm`    |
 | 7.3         | `7.3-cli` | `7.3-apache`, `latest` | `7.3-fpm`    |
 
+## Tools
+
+* [Apache](https://httpd.apache.org/docs/current/) (\**depends on image variant*)
+* [Composer](https://getcomposer.org/doc/)
+* [cURL](https://curl.haxx.se/docs/manpage.html)
+* [Git](https://git-scm.com/docs)
+* [Lynx](https://lynx.invisible-island.net/lynx_help/)
+* [Nano](https://www.nano-editor.org/docs.php)
+* [Node.js](https://nodejs.org/en/docs/)
+* [PHP](http://php.net/docs.php)
+* [PHP-FPM](http://php.net/manual/fr/install.fpm.configuration.php) (\**depends on image variant*)
+* [rsync](https://download.samba.org/pub/rsync/rsync.html)
+* [sshpass](https://linux.die.net/man/1/sshpass)
+* [SVN](https://subversion.apache.org/docs/)
+* [vim](https://www.vim.org/docs.php)
+* [Xdebug](https://xdebug.org/docs/)
+* [Yarn](https://yarnpkg.com/lang/en/docs/)
+
 ## Variables
 
 ### Configurable environment variables
@@ -49,6 +67,7 @@ These environment variables can be overriden to change the default behavior of t
 | `FRX_PHP_XDEBUG_REMOTE_ENABLE`       | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote functionnality, defauls to `1`.
 | `FRX_PHP_XDEBUG_REMOTE_HOST`         | `string`  | `172.17.0.1`                                                         | Set remote IP address for Xdebug, defaults to Docker host IP address.
 | `FRX_PHP_XDEBUG_REMOTE_PORT`         | `integer` | `9000`                                                               | Set remote port number for Xdebug, defaults to `9000`.
+| `FRX_SCRIPT_START`                   | `string ` | `chown www-data:www-data -R .`                                       | Execute a script on container startup, one instruction per line.
 
 ### Readonly environment variables
 
@@ -116,6 +135,7 @@ services:
       - FRX_APACHE_ENABLE_MOD=rewrite
       - FRX_APACHE_DOCUMENT_ROOT=/var/www/html/public
       - FRX_COMPOSER_VENDOR_CACHE_ENABLE=1
+      - FRX_SCRIPT_START=chown www-data:www-data -R var
     networks:
       - backend
     ports:
@@ -123,11 +143,11 @@ services:
     volumes:
       - ./:/var/www/html:rw,cached
       - ./vendor:/frx/composer/vendor:rw
-      - var:/var/www/html/var
+      - cache:/var/www/html/var/cache
       - vendor:/var/www/html/vendor
 
 volumes:
-  var:
+  cache:
   vendor:
 ```
 

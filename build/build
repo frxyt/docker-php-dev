@@ -17,10 +17,13 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-rec
     git \
     gnupg \
     libzip-dev \
+    lynx \
+    nano \
     rsync \
     sshpass \
     subversion \
     unzip \
+    vim \
     yarn
 
 # Install Xdebug
