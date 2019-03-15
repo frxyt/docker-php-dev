@@ -1,5 +1,11 @@
 # Docker Image for PHP development, by [FEROX](https://ferox.yt)
 
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/frxyt/php-dev.svg)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/frxyt/php-dev.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/frxyt/php-dev.svg)
+![GitHub issues](https://img.shields.io/github/issues/frxyt/docker-php-dev.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/frxyt/docker-php-dev.svg)
+
 Use this image to increase your development speed. No need to create your own `Dockerfile`,
 just ask this image to install missing packages and extensions on runtime through your `docker-compose.yml` !
 
