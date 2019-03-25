@@ -23,8 +23,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-rec
     sshpass \
     subversion \
     unzip \
-    vim \
-    yarn
+    vim
 
 # Install Xdebug
 if [[ "${FRX_PHP_VERSION}" =~ ^7.3 ]]; then
@@ -51,10 +50,14 @@ docker-php-ext-configure zip --with-zlib-dir
 docker-php-ext-install -j$(nproc) zip
 composer self-update
 
-# Install Node.js
+# Install Node.js & Yarn
 curl -sL https://deb.nodesource.com/setup_10.x | bash -
-DEBIAN_FRONTEND=noninteractive apt-get upgrade -y --fix-missing --no-install-recommends \
-    nodejs
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends \
+    nodejs \
+    yarn
 
 # Enable some configuration for Apache with environment variables
 if [ -f /etc/apache2/sites-enabled/000-default.conf -a -f /etc/apache2/envvars ]; then
