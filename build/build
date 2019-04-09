@@ -50,6 +50,11 @@ docker-php-ext-configure zip --with-zlib-dir
 docker-php-ext-install -j$(nproc) zip
 composer self-update
 
+# Install PHP CS Fixer
+curl -sSL https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
+chmod a+x php-cs-fixer
+mv php-cs-fixer /usr/local/bin/php-cs-fixer
+
 # Install Node.js & Yarn
 curl -sL https://deb.nodesource.com/setup_10.x | bash -
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -78,6 +83,7 @@ cat /etc/debian_version
 php -v
 php -m
 composer -V
+php-cs-fixer -V
 node -v
 npm -v
 yarn --version

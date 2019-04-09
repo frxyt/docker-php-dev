@@ -41,6 +41,7 @@ This image is also capable of highly increase performances on Docker for Mac/Win
 * [Nano](https://www.nano-editor.org/docs.php)
 * [Node.js](https://nodejs.org/en/docs/)
 * [PHP](http://php.net/docs.php)
+* [PHP CS Fixer](https://cs.symfony.com/)
 * [PHP-FPM](http://php.net/manual/fr/install.fpm.configuration.php) (\**depends on image variant*)
 * [rsync](https://download.samba.org/pub/rsync/rsync.html)
 * [sshpass](https://linux.die.net/man/1/sshpass)
