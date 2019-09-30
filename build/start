@@ -100,7 +100,7 @@ if [ -n "${FRX_PHP_EXT_ENABLE}" ]; then
     for extension in ${FRX_PHP_EXT_ENABLE}; do
         if ! grep -q "${extension}" /frx/FRX_PHP_EXT_ENABLE; then
             echo -n "Enabling PHP extention '${extension}'... "
-            docker-php-ext-enable -j$(nproc) ${extension} > /frx/start.log 2>&1
+            docker-php-ext-enable ${extension} > /frx/start.log 2>&1
             echo "${extension}" >> /frx/FRX_PHP_EXT_ENABLE
             echo "[OK]"
         fi
