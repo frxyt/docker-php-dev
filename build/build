@@ -34,7 +34,7 @@ else
     pecl install xdebug
 fi
 docker-php-ext-enable xdebug
-cat >> /usr/local/etc/php/conf.d/zz-frx-xdebug.ini <<'EOL'
+cat > /usr/local/etc/php/conf.d/zz-frx-xdebug.ini <<'EOL'
 xdebug.max_nesting_level    = ${FRX_PHP_XDEBUG_MAX_NESTING_LEVEL}
 xdebug.remote_autostart     = ${FRX_PHP_XDEBUG_REMOTE_AUTOSTART}
 xdebug.remote_connect_back  = ${FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK}
@@ -48,7 +48,11 @@ if [[ "${FRX_PHP_VERSION}" =~ ^7. ]]; then
     curl -sSL https://github.com/tideways/php-xhprof-extension/releases/download/v5.0.1/tideways-xhprof_5.0.1_amd64.deb -o tideways-xhprof_amd64.deb
     dpkg -i tideways-xhprof_amd64.deb
     apt-get install -f
-    echo "extension=/usr/lib/tideways_xhprof/tideways_xhprof-${FRX_PHP_VERSION:0:3}.so" >> /usr/local/etc/php/conf.d/zz-frx-tideways-xhprof.ini
+    rm -f tideways-xhprof_amd64.deb
+    echo "extension=/usr/lib/tideways_xhprof/tideways_xhprof-${FRX_PHP_VERSION:0:3}.so" > /usr/local/etc/php/conf.d/zz-frx-tideways-xhprof.ini
+    cat >> /usr/local/etc/php/conf.d/zz-frx-tideways-xhprof.ini <<'EOL'
+tideways_xhprof.clock_use_rdtsc=${FRX_PHP_TIDEWAYS_XHPROF_CLOCK_USE_RDTSC}
+EOL
 else
     pecl install xhprof-beta
     docker-php-ext-enable xhprof

@@ -57,25 +57,26 @@ This image is also capable of highly increase performances on Docker for Mac/Win
 
 These environment variables can be overriden to change the default behavior of the image and adapt it to your needs:
 
-| Name                                 | Type      | Example                                                              | Description
-| :----------------------------------- | :-------- | :------------------------------------------------------------------- | :----------
-| `FRX_APACHE_ENABLE_MOD`              | `string`  | `rewrite`                                                            | Enable Apache module, module names can be separated by spaces or new lines.
-| `FRX_APACHE_DOCUMENT_ROOT`           | `string`  | `/var/www/html/public`                                               | Change Apache document root.
-| `FRX_APT_GET_INSTALL`                | `string`  | `libfreetype6-dev libgd-dev libjpeg62-turbo-dev libpng-dev`          | Install Debian packages, package names can be separated by spaces or new lines.
-| `FRX_COMPOSER_VENDOR_CACHE_ENABLE`   | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable cache for composer vendor path, defaults to `0`.
-| `FRX_COMPOSER_VENDOR_CACHE_PATH`     | `string`  | `vendor`, `app/vendor`                                               | Set the path of composer vendor path to cache.
-| `FRX_PECL_INSTALL`                   | `string`  | `xdebug`                                                             | Install PECL extension, extension names can be separated by spaces or new lines.
-| `FRX_PHP_EXT_CONFIGURE`              | `string`  | `gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/` | Configure PHP extension, multiple configurations can be separated by new lines.
-| `FRX_PHP_EXT_ENABLE`                 | `string`  | `xdebug`                                                             | Enable PHP extension, extension names can be separated by spaces or new lines.
-| `FRX_PHP_EXT_INSTALL`                | `string`  | `gd`                                                                 | Install PHP extension, extension names can be separated by spaces or new lines.
-| `FRX_PHP_INI`                        | `string`  | `date.timezone = "Europe/Paris"`                                     | Add settings to `php.ini`, multiple settings can be separated by new lines.
-| `FRX_PHP_XDEBUG_MAX_NESTING_LEVEL`   | `integer` | `256`                                                                | Max PHP call nested level used by Xdebug, defauls to `-1` (disabled).
-| `FRX_PHP_XDEBUG_REMOTE_AUTOSTART`    | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote auto connect functionnality, defauls to `1`.
-| `FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK` | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote connect back functionnality, defauls to `0`.
-| `FRX_PHP_XDEBUG_REMOTE_ENABLE`       | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote functionnality, defauls to `1`.
-| `FRX_PHP_XDEBUG_REMOTE_HOST`         | `string`  | `172.17.0.1`                                                         | Set remote IP address for Xdebug, defaults to Docker host IP address.
-| `FRX_PHP_XDEBUG_REMOTE_PORT`         | `integer` | `9000`                                                               | Set remote port number for Xdebug, defaults to `9000`.
-| `FRX_SCRIPT_START`                   | `string ` | `chown www-data:www-data -R .`                                       | Execute a script on container startup, one instruction per line.
+| Name                                      | Type      | Example                                                              | Description
+| :---------------------------------------- | :-------- | :------------------------------------------------------------------- | :----------
+| `FRX_APACHE_ENABLE_MOD`                   | `string`  | `rewrite`                                                            | Enable Apache module, module names can be separated by spaces or new lines.
+| `FRX_APACHE_DOCUMENT_ROOT`                | `string`  | `/var/www/html/public`                                               | Change Apache document root.
+| `FRX_APT_GET_INSTALL`                     | `string`  | `libfreetype6-dev libgd-dev libjpeg62-turbo-dev libpng-dev`          | Install Debian packages, package names can be separated by spaces or new lines.
+| `FRX_COMPOSER_VENDOR_CACHE_ENABLE`        | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable cache for composer vendor path, defaults to `0`.
+| `FRX_COMPOSER_VENDOR_CACHE_PATH`          | `string`  | `vendor`, `app/vendor`                                               | Set the path of composer vendor path to cache.
+| `FRX_PECL_INSTALL`                        | `string`  | `xdebug`                                                             | Install PECL extension, extension names can be separated by spaces or new lines.
+| `FRX_PHP_EXT_CONFIGURE`                   | `string`  | `gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/` | Configure PHP extension, multiple configurations can be separated by new lines.
+| `FRX_PHP_EXT_ENABLE`                      | `string`  | `xdebug`                                                             | Enable PHP extension, extension names can be separated by spaces or new lines.
+| `FRX_PHP_EXT_INSTALL`                     | `string`  | `gd`                                                                 | Install PHP extension, extension names can be separated by spaces or new lines.
+| `FRX_PHP_INI`                             | `string`  | `date.timezone = "Europe/Paris"`                                     | Add settings to `php.ini`, multiple settings can be separated by new lines.
+| `FRX_PHP_TIDEWAYS_XHPROF_CLOCK_USE_RDTSC` | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable the use of TSC clock for Tideways XHProf, defaults to `0`.
+| `FRX_PHP_XDEBUG_MAX_NESTING_LEVEL`        | `integer` | `256`                                                                | Max PHP call nested level used by Xdebug, defaults to `-1` (disabled).
+| `FRX_PHP_XDEBUG_REMOTE_AUTOSTART`         | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote auto connect functionnality, defaults to `1`.
+| `FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK`      | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote connect back functionnality, defaults to `0`.
+| `FRX_PHP_XDEBUG_REMOTE_ENABLE`            | `integer` | `0` *(Off)* / `1` *(On)*                                             | Enable or disable Xdebug remote functionnality, defaults to `1`.
+| `FRX_PHP_XDEBUG_REMOTE_HOST`              | `string`  | `172.17.0.1`                                                         | Set remote IP address for Xdebug, defaults to Docker host IP address.
+| `FRX_PHP_XDEBUG_REMOTE_PORT`              | `integer` | `9000`                                                               | Set remote port number for Xdebug, defaults to `9000`.
+| `FRX_SCRIPT_START`                        | `string ` | `chown www-data:www-data -R .`                                       | Execute a script on container startup, one instruction per line.
 
 ### Readonly environment variables
 
