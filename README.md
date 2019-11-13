@@ -48,6 +48,7 @@ This image is also capable of highly increase performances on Docker for Mac/Win
 * [SVN](https://subversion.apache.org/docs/)
 * [vim](https://www.vim.org/docs.php)
 * [Xdebug](https://xdebug.org/docs/)
+* [XHProf](https://www.php.net/manual/en/book.xhprof.php) or [Tideways XHProf](https://github.com/tideways/php-xhprof-extension)
 * [Yarn](https://yarnpkg.com/lang/en/docs/)
 
 ## Variables

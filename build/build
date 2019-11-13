@@ -43,6 +43,17 @@ xdebug.remote_host          = ${FRX_PHP_XDEBUG_REMOTE_HOST}
 xdebug.remote_port          = ${FRX_PHP_XDEBUG_REMOTE_PORT}
 EOL
 
+# Install XHProf
+if [[ "${FRX_PHP_VERSION}" =~ ^7. ]]; then
+    curl -sSL https://github.com/tideways/php-xhprof-extension/releases/download/v5.0.1/tideways-xhprof_5.0.1_amd64.deb -o tideways-xhprof_amd64.deb
+    dpkg -i tideways-xhprof_amd64.deb
+    apt-get install -f
+    echo "extension=/usr/lib/tideways_xhprof/tideways_xhprof-${FRX_PHP_VERSION:0:3}.so" >> /usr/local/etc/php/conf.d/zz-frx-tideways-xhprof.ini
+else
+    pecl install xhprof-beta
+    docker-php-ext-enable xhprof
+fi
+
 # Install Composer
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
