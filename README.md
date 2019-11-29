@@ -29,7 +29,8 @@ This image is also capable of highly increase performances on Docker for Mac/Win
 | 7.0         | `7.0-cli` | `7.0-apache`           | `7.0-fpm`    |
 | 7.1         | `7.1-cli` | `7.1-apache`           | `7.1-fpm`    |
 | 7.2         | `7.2-cli` | `7.2-apache`           | `7.2-fpm`    |
-| 7.3         | `7.3-cli` | `7.3-apache`, `latest` | `7.3-fpm`    |
+| 7.3         | `7.3-cli` | `7.3-apache`           | `7.3-fpm`    |
+| 7.4         | `7.4-cli` | `7.4-apache`, `latest` | `7.4-fpm`    |
 
 ## Tools
 
@@ -182,6 +183,10 @@ docker build -f ./php7.2/Dockerfile-fpm    -t frxyt/php-dev:7.2-fpm    .
 docker build -f ./php7.3/Dockerfile-apache -t frxyt/php-dev:7.3-apache .
 docker build -f ./php7.3/Dockerfile-cli    -t frxyt/php-dev:7.3-cli    .
 docker build -f ./php7.3/Dockerfile-fpm    -t frxyt/php-dev:7.3-fpm    .
+
+docker build -f ./php7.4/Dockerfile-apache -t frxyt/php-dev:7.4-apache .
+docker build -f ./php7.4/Dockerfile-cli    -t frxyt/php-dev:7.4-cli    .
+docker build -f ./php7.4/Dockerfile-fpm    -t frxyt/php-dev:7.4-fpm    .
 ```
 
 ## License
