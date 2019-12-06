@@ -45,7 +45,7 @@ EOL
 
 # Install XHProf
 if [[ "${FRX_PHP_VERSION}" =~ ^7. ]]; then
-    curl -sSL https://github.com/tideways/php-xhprof-extension/releases/download/v5.0.1/tideways-xhprof_5.0.1_amd64.deb -o tideways-xhprof_amd64.deb
+    curl -sSL https://github.com/tideways/php-xhprof-extension/releases/download/v5.0.2/tideways-xhprof_5.0.2_amd64.deb -o tideways-xhprof_amd64.deb
     dpkg -i tideways-xhprof_amd64.deb
     apt-get install -f
     rm -f tideways-xhprof_amd64.deb
