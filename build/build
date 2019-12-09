@@ -61,7 +61,9 @@ fi
 # Install Composer
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
-docker-php-ext-configure zip --with-zlib-dir
+if [[ "${FRX_PHP_VERSION}" != 7.4 ]]; then
+    docker-php-ext-configure zip --with-zlib-dir
+fi
 docker-php-ext-install -j$(nproc) zip
 composer self-update
 
