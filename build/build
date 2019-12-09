@@ -54,7 +54,7 @@ if [[ "${FRX_PHP_VERSION}" =~ ^7. ]]; then
 tideways_xhprof.clock_use_rdtsc=${FRX_PHP_TIDEWAYS_XHPROF_CLOCK_USE_RDTSC}
 EOL
 else
-    pecl install xhprof-beta
+    pecl install xhprof
     docker-php-ext-enable xhprof
 fi
 
