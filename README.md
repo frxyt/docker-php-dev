@@ -44,6 +44,7 @@ This image is also capable of highly increase performances on Docker for Mac/Win
 * [PHP](http://php.net/docs.php)
 * [PHP CS Fixer](https://cs.symfony.com/)
 * [PHP-FPM](http://php.net/manual/fr/install.fpm.configuration.php) (\**depends on image variant*)
+* [PhpMetrics](https://github.com/phpmetrics/PhpMetrics)
 * [rsync](https://download.samba.org/pub/rsync/rsync.html)
 * [sshpass](https://linux.die.net/man/1/sshpass)
 * [SVN](https://subversion.apache.org/docs/)

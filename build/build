@@ -72,6 +72,11 @@ curl -sSL https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
 chmod a+x php-cs-fixer
 mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
+# Install PhpMetrics
+curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/latest/download/phpmetrics.phar -o phpmetrics
+chmod a+x phpmetrics
+mv phpmetrics /usr/local/bin/phpmetrics
+
 # Install Node.js & Yarn
 curl -sL https://deb.nodesource.com/setup_10.x | bash -
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -101,6 +106,7 @@ php -v
 php -m
 composer -V
 php-cs-fixer -V
+phpmetrics --version
 node -v
 npm -v
 yarn --version
