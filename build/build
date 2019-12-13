@@ -67,15 +67,52 @@ fi
 docker-php-ext-install -j$(nproc) zip
 composer self-update
 
+# Install PHPCPD
+if [[ "${FRX_PHP_VERSION}" =~ ^7.[34] ]]; then
+    curl -sSL https://phar.phpunit.de/phpcpd.phar -o /usr/local/bin/phpcpd
+    chmod a+x /usr/local/bin/phpcpd
+fi
+
 # Install PHP CS Fixer
-curl -sSL https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
-chmod a+x php-cs-fixer
-mv php-cs-fixer /usr/local/bin/php-cs-fixer
+curl -sSL https://cs.symfony.com/download/php-cs-fixer-v2.phar -o /usr/local/bin/php-cs-fixer
+chmod a+x /usr/local/bin/php-cs-fixer
+
+# Install PHP_Depend
+curl -sSL https://github.com/pdepend/pdepend/releases/download/2.6.0-beta.1/pdepend.phar -o /usr/local/bin/pdepend
+chmod a+x /usr/local/bin/pdepend
+
+# Install PHPMD
+curl -sSL https://github.com/phpmd/phpmd/releases/latest/download/phpmd.phar -o /usr/local/bin/phpmd
+chmod a+x /usr/local/bin/phpmd
 
 # Install PhpMetrics
-curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/latest/download/phpmetrics.phar -o phpmetrics
-chmod a+x phpmetrics
-mv phpmetrics /usr/local/bin/phpmetrics
+curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/latest/download/phpmetrics.phar -o /usr/local/bin/phpmetrics
+chmod a+x /usr/local/bin/phpmetrics
+
+# Install PHPStan
+if [[ "${FRX_PHP_VERSION}" =~ ^7.[1234] ]]; then
+    curl -sSL https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar -o /usr/local/bin/phpstan
+    chmod a+x /usr/local/bin/phpstan
+fi
+
+# Install PHPUnit
+if [[ "${FRX_PHP_VERSION}" =~ ^5.6 ]]; then
+    curl -sSL https://phar.phpunit.de/phpunit-5.phar -o /usr/local/bin/phpunit-5
+    chmod a+x /usr/local/bin/phpunit-5
+fi
+if [[ "${FRX_PHP_VERSION}" =~ ^7. ]]; then
+    curl -sSL https://phar.phpunit.de/phpunit-6.phar -o /usr/local/bin/phpunit-6
+    chmod a+x /usr/local/bin/phpunit-6
+fi
+if [[ "${FRX_PHP_VERSION}" =~ ^7.[1234] ]]; then
+    curl -sSL https://phar.phpunit.de/phpunit-7.phar -o /usr/local/bin/phpunit-7
+    chmod a+x /usr/local/bin/phpunit-7
+fi
+if [[ "${FRX_PHP_VERSION}" =~ ^7.[234] ]]; then
+    curl -sSL https://phar.phpunit.de/phpunit-8.phar -o /usr/local/bin/phpunit-8
+    chmod a+x /usr/local/bin/phpunit-8
+fi
+cp $(ls -r1 --color=never /usr/local/bin/phpunit* | head -1) /usr/local/bin/phpunit
 
 # Install Node.js & Yarn
 curl -sL https://deb.nodesource.com/setup_10.x | bash -
@@ -105,8 +142,17 @@ cat /etc/debian_version
 php -v
 php -m
 composer -V
+pdepend --version
+[[ "${FRX_PHP_VERSION}" =~ ^7.[34] ]] && phpcpd --version
 php-cs-fixer -V
+phpmd --version
 phpmetrics --version
+[[ "${FRX_PHP_VERSION}" =~ ^7.[1234] ]] && phpstan --version
+[[ "${FRX_PHP_VERSION}" =~ ^5.6 ]] && phpunit-5 --version
+[[ "${FRX_PHP_VERSION}" =~ ^7. ]] && phpunit-6 --version
+[[ "${FRX_PHP_VERSION}" =~ ^7.[1234] ]] && phpunit-7 --version
+[[ "${FRX_PHP_VERSION}" =~ ^7.[234] ]] && phpunit-8 --version
+phpunit --version
 node -v
 npm -v
 yarn --version
