@@ -107,7 +107,11 @@ curl -sSL https://github.com/phpmd/phpmd/releases/latest/download/phpmd.phar -o 
 chmod a+x /usr/local/bin/phpmd
 
 # Install PhpMetrics
-curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/latest/download/phpmetrics.phar -o /usr/local/bin/phpmetrics
+if [[ "${FRX_PHP_VERSION}" =~ ^5.6 ]]; then
+    curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/download/v2.3.2/phpmetrics.phar -o /usr/local/bin/phpmetrics
+else
+    curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/latest/download/phpmetrics.phar -o /usr/local/bin/phpmetrics
+fi
 chmod a+x /usr/local/bin/phpmetrics
 
 # Install PHPStan
@@ -169,7 +173,7 @@ php -m
 composer -V
 pdepend --version
 [[ "${FRX_PHP_VERSION}" =~ ^(7.[34])|(8.) ]] && phpcpd --version
-[[ "${FRX_PHP_VERSION}" =~ ^7.[34] ]] && hp-cs-fixer -V
+[[ "${FRX_PHP_VERSION}" =~ ^(5.6)|(7.) ]] && php-cs-fixer -V
 phpmd --version
 phpmetrics --version
 [[ "${FRX_PHP_VERSION}" =~ ^(7.[1234])|(8.) ]] && phpstan --version
