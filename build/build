@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Copyright (c) 2019 FEROX YT EIRL, www.ferox.yt <devops@ferox.yt>
-# Copyright (c) 2019 Jérémy WALTHER <jeremy.walther@golflima.net>
+# Copyright (c) 2019-2020 FEROX YT EIRL, www.ferox.yt <devops@ferox.yt>
+# Copyright (c) 2019-2020 Jérémy WALTHER <jeremy.walther@golflima.net>
 # See <https://github.com/frxyt/docker-php-dev> for details.
 
 set -ex
@@ -26,15 +26,27 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-rec
     vim
 
 # Install Xdebug
-if [[ "${FRX_PHP_VERSION}" =~ ^7.4 ]]; then
-    pecl install xdebug-beta
+if [[ "${FRX_PHP_VERSION}" =~ ^8. ]]; then
+    pecl install xdebug
+elif [[ "${FRX_PHP_VERSION}" =~ ^7.[1234] ]]; then
+    pecl install xdebug-2.9.8
+elif [[ "${FRX_PHP_VERSION}" =~ ^7.0 ]]; then
+    pecl install xdebug-2.7.2
 elif [[ "${FRX_PHP_VERSION}" =~ ^5.6 ]]; then
     pecl install xdebug-2.5.5
-else
-    pecl install xdebug
 fi
 docker-php-ext-enable xdebug
-cat > /usr/local/etc/php/conf.d/zz-frx-xdebug.ini <<'EOL'
+if [[ "${FRX_PHP_VERSION}" =~ ^8. ]]; then
+    cat > /usr/local/etc/php/conf.d/zz-frx-xdebug.ini <<'EOL'
+xdebug.client_host          = ${FRX_PHP_XDEBUG_CLIENT_HOST}
+xdebug.client_port          = ${FRX_PHP_XDEBUG_CLIENT_PORT}
+xdebug.discover_client_host = ${FRX_PHP_XDEBUG_DISCOVER_CLIENT_HOST}
+xdebug.max_nesting_level    = ${FRX_PHP_XDEBUG_MAX_NESTING_LEVEL}
+xdebug.mode                 = ${FRX_PHP_XDEBUG_MODE}
+xdebug.start_with_request   = ${FRX_PHP_XDEBUG_START_WITH_REQUEST}
+EOL
+else
+    cat > /usr/local/etc/php/conf.d/zz-frx-xdebug.ini <<'EOL'
 xdebug.max_nesting_level    = ${FRX_PHP_XDEBUG_MAX_NESTING_LEVEL}
 xdebug.remote_autostart     = ${FRX_PHP_XDEBUG_REMOTE_AUTOSTART}
 xdebug.remote_connect_back  = ${FRX_PHP_XDEBUG_REMOTE_CONNECT_BACK}
@@ -42,6 +54,7 @@ xdebug.remote_enable        = ${FRX_PHP_XDEBUG_REMOTE_ENABLE}
 xdebug.remote_host          = ${FRX_PHP_XDEBUG_REMOTE_HOST}
 xdebug.remote_port          = ${FRX_PHP_XDEBUG_REMOTE_PORT}
 EOL
+fi
 
 # Install XHProf
 if [[ "${FRX_PHP_VERSION}" =~ ^7. ]]; then
@@ -53,22 +66,30 @@ if [[ "${FRX_PHP_VERSION}" =~ ^7. ]]; then
     cat >> /usr/local/etc/php/conf.d/zz-frx-tideways-xhprof.ini <<'EOL'
 tideways_xhprof.clock_use_rdtsc=${FRX_PHP_TIDEWAYS_XHPROF_CLOCK_USE_RDTSC}
 EOL
-else
+elif [[ "${FRX_PHP_VERSION}" =~ ^5.6 ]]; then
     pecl install xhprof-0.9.4
     docker-php-ext-enable xhprof
+fi
+
+# Enable logs for php-fpm
+if [[ "${FRX_DOCKER_FROM}" =~ -fpm$ ]]; then
+    cat >> /usr/local/etc/php-fpm.d/www-log.conf <<'EOL'
+php_admin_value[error_log] = /var/log/fpm-php.www.log
+php_admin_flag[log_errors] = on
+EOL
 fi
 
 # Install Composer
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
-if [[ ! "${FRX_PHP_VERSION}" =~ ^7.4 ]]; then
+if [[ ! "${FRX_PHP_VERSION}" =~ ^(7.4)|(8.) ]]; then
     docker-php-ext-configure zip --with-zlib-dir
 fi
 docker-php-ext-install -j$(nproc) zip
 composer self-update
 
 # Install PHPCPD
-if [[ "${FRX_PHP_VERSION}" =~ ^7.[34] ]]; then
+if [[ "${FRX_PHP_VERSION}" =~ ^(7.[34])|(8.) ]]; then
     curl -sSL https://phar.phpunit.de/phpcpd.phar -o /usr/local/bin/phpcpd
     chmod a+x /usr/local/bin/phpcpd
 fi
@@ -78,7 +99,7 @@ curl -sSL https://cs.symfony.com/download/php-cs-fixer-v2.phar -o /usr/local/bin
 chmod a+x /usr/local/bin/php-cs-fixer
 
 # Install PHP_Depend
-curl -sSL https://github.com/pdepend/pdepend/releases/download/2.6.0-beta.1/pdepend.phar -o /usr/local/bin/pdepend
+curl -sSL https://github.com/pdepend/pdepend/releases/latest/download/pdepend.phar -o /usr/local/bin/pdepend
 chmod a+x /usr/local/bin/pdepend
 
 # Install PHPMD
@@ -90,7 +111,7 @@ curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/latest/download/phpm
 chmod a+x /usr/local/bin/phpmetrics
 
 # Install PHPStan
-if [[ "${FRX_PHP_VERSION}" =~ ^7.[1234] ]]; then
+if [[ "${FRX_PHP_VERSION}" =~ ^(7.[1234])|(8.) ]]; then
     curl -sSL https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar -o /usr/local/bin/phpstan
     chmod a+x /usr/local/bin/phpstan
 fi
@@ -108,9 +129,13 @@ if [[ "${FRX_PHP_VERSION}" =~ ^7.[1234] ]]; then
     curl -sSL https://phar.phpunit.de/phpunit-7.phar -o /usr/local/bin/phpunit-7
     chmod a+x /usr/local/bin/phpunit-7
 fi
-if [[ "${FRX_PHP_VERSION}" =~ ^7.[234] ]]; then
+if [[ "${FRX_PHP_VERSION}" =~ ^7.([234])|(8.) ]]; then
     curl -sSL https://phar.phpunit.de/phpunit-8.phar -o /usr/local/bin/phpunit-8
     chmod a+x /usr/local/bin/phpunit-8
+fi
+if [[ "${FRX_PHP_VERSION}" =~ ^7.([34])|(8.) ]]; then
+    curl -sSL https://phar.phpunit.de/phpunit-9.phar -o /usr/local/bin/phpunit-9
+    chmod a+x /usr/local/bin/phpunit-9
 fi
 cp $(ls -r1 --color=never /usr/local/bin/phpunit* | head -1) /usr/local/bin/phpunit
 
@@ -143,15 +168,16 @@ php -v
 php -m
 composer -V
 pdepend --version
-[[ "${FRX_PHP_VERSION}" =~ ^7.[34] ]] && phpcpd --version
-php-cs-fixer -V
+[[ "${FRX_PHP_VERSION}" =~ ^(7.[34])|(8.) ]] && phpcpd --version
+[[ "${FRX_PHP_VERSION}" =~ ^7.[34] ]] && hp-cs-fixer -V
 phpmd --version
 phpmetrics --version
-[[ "${FRX_PHP_VERSION}" =~ ^7.[1234] ]] && phpstan --version
+[[ "${FRX_PHP_VERSION}" =~ ^(7.[1234])|(8.) ]] && phpstan --version
 [[ "${FRX_PHP_VERSION}" =~ ^5.6 ]] && phpunit-5 --version
 [[ "${FRX_PHP_VERSION}" =~ ^7. ]] && phpunit-6 --version
 [[ "${FRX_PHP_VERSION}" =~ ^7.[1234] ]] && phpunit-7 --version
-[[ "${FRX_PHP_VERSION}" =~ ^7.[234] ]] && phpunit-8 --version
+[[ "${FRX_PHP_VERSION}" =~ ^(7.[234])|(8.) ]] && phpunit-8 --version
+[[ "${FRX_PHP_VERSION}" =~ ^(7.[34])|(8.) ]] && phpunit-9 --version
 phpunit --version
 node -v
 npm -v

@@ -31,6 +31,7 @@ This image is also capable of highly increase performances on Docker for Mac/Win
 | 7.2         | `7.2-cli` | `7.2-apache`           | `7.2-fpm`    |
 | 7.3         | `7.3-cli` | `7.3-apache`           | `7.3-fpm`    |
 | 7.4         | `7.4-cli` | `7.4-apache`, `latest` | `7.4-fpm`    |
+| 8.0         | `8.0-cli` | `8.0-apache`           | `8.0-fpm`    |
 
 ## Tools
 
@@ -193,6 +194,10 @@ docker build -f ./php7.3/Dockerfile-fpm    -t frxyt/php-dev:7.3-fpm    .
 docker build -f ./php7.4/Dockerfile-apache -t frxyt/php-dev:7.4-apache .
 docker build -f ./php7.4/Dockerfile-cli    -t frxyt/php-dev:7.4-cli    .
 docker build -f ./php7.4/Dockerfile-fpm    -t frxyt/php-dev:7.4-fpm    .
+
+docker build -f ./php8.0/Dockerfile-apache -t frxyt/php-dev:8.0-apache .
+docker build -f ./php8.0/Dockerfile-cli    -t frxyt/php-dev:8.0-cli    .
+docker build -f ./php8.0/Dockerfile-fpm    -t frxyt/php-dev:8.0-fpm    .
 ```
 
 ## License
@@ -202,8 +207,8 @@ This project and images are published under the [MIT License](LICENSE).
 ```
 MIT License
 
-Copyright (c) 2019 FEROX YT EIRL, www.ferox.yt <devops@ferox.yt>
-Copyright (c) 2019 Jérémy WALTHER <jeremy.walther@golflima.net>
+Copyright (c) 2019-2020 FEROX YT EIRL, www.ferox.yt <devops@ferox.yt>
+Copyright (c) 2019-2020 Jérémy WALTHER <jeremy.walther@golflima.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
