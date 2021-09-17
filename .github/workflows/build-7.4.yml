@@ -23,7 +23,8 @@ jobs:
       - name: Build and push - frxyt/php-dev:7.4-apache
         uses: docker/build-push-action@v2
         with:
-          context: ./php7.4/Dockerfile-apache
+          context: .
+          file: ./php7.4/Dockerfile-apache
           push: true
           tags: |
             frxyt/php-dev:latest
@@ -33,7 +34,8 @@ jobs:
       - name: Build and push - frxyt/php-dev:7.4-cli
         uses: docker/build-push-action@v2
         with:
-          context: ./php7.4/Dockerfile-cli
+          context: .
+          file: ./php7.4/Dockerfile-cli
           push: true
           tags: |
             frxyt/php-dev:7.4-cli
@@ -41,7 +43,8 @@ jobs:
       - name: Build and push - frxyt/php-dev:7.4-fpm
         uses: docker/build-push-action@v2
         with:
-          context: ./php7.4/Dockerfile-fpm
+          context: .
+          file: ./php7.4/Dockerfile-fpm
           push: true
           tags: |
             frxyt/php-dev:7.4-fpm
