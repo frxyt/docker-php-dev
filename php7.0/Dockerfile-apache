@@ -1,4 +1,4 @@
-FROM php:7.0-apache-buster
+FROM php:7.0-apache-stretch
 
 LABEL maintainer="Jérémy WALTHER <jeremy@ferox.yt>"
 

@@ -1,4 +1,4 @@
-FROM php:7.0-cli-buster
+FROM php:7.0-cli-stretch
 
 LABEL maintainer="Jérémy WALTHER <jeremy@ferox.yt>"
 
