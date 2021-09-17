@@ -5,8 +5,9 @@ on:
     branches:
       - master
     paths:
-      - .github/workflows/build.yml
-      - Dockerfile
+      - .github/workflows/build-7.3.yml
+      - ./build/**
+      - ./php7.3/**
 
 jobs:
   build-docker-php73:

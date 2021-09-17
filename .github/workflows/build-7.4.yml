@@ -5,8 +5,9 @@ on:
     branches:
       - master
     paths:
-      - .github/workflows/build.yml
-      - Dockerfile
+      - .github/workflows/build-7.4.yml
+      - ./build/**
+      - ./php7.4/**
 
 jobs:
   build-docker-php74:
@@ -25,6 +26,7 @@ jobs:
           context: ./php7.4/Dockerfile-apache
           push: true
           tags: |
+            frxyt/php-dev:latest
             frxyt/php-dev:7.4
             frxyt/php-dev:7.4-apache
             frxyt/php-dev:7.4-apache-buster
