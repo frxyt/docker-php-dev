@@ -1,0 +1,46 @@
+name: Build and publish Docker images
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/build.yml
+      - Dockerfile
+
+jobs:
+  build-docker-php56:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # PHP 5.6
+      - name: Build and push - frxyt/php-dev:5.6-apache
+        uses: docker/build-push-action@v2
+        with:
+          context: ./php5.6/Dockerfile-apache
+          push: true
+          tags: |
+            frxyt/php-dev:5.6
+            frxyt/php-dev:5.6-apache
+            frxyt/php-dev:5.6-apache-buster
+      - name: Build and push - frxyt/php-dev:5.6-cli
+        uses: docker/build-push-action@v2
+        with:
+          context: ./php5.6/Dockerfile-cli
+          push: true
+          tags: |
+            frxyt/php-dev:5.6-cli
+            frxyt/php-dev:5.6-cli-buster
+      - name: Build and push - frxyt/php-dev:5.6-fpm
+        uses: docker/build-push-action@v2
+        with:
+          context: ./php5.6/Dockerfile-fpm
+          push: true
+          tags: |
+            frxyt/php-dev:5.6-fpm
+            frxyt/php-dev:5.6-fpm-buster

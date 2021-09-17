@@ -1,0 +1,21 @@
+name: Update Description
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/description.yml
+      - README.md
+
+jobs:
+  update-docker-readme:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: frxyt/php-dev

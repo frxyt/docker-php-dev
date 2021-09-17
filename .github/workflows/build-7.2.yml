@@ -1,0 +1,46 @@
+name: Build and publish Docker images
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/build.yml
+      - Dockerfile
+
+jobs:
+  build-docker-php72:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # PHP 7.2
+      - name: Build and push - frxyt/php-dev:7.2-apache
+        uses: docker/build-push-action@v2
+        with:
+          context: ./php7.2/Dockerfile-apache
+          push: true
+          tags: |
+            frxyt/php-dev:7.2
+            frxyt/php-dev:7.2-apache
+            frxyt/php-dev:7.2-apache-buster
+      - name: Build and push - frxyt/php-dev:7.2-cli
+        uses: docker/build-push-action@v2
+        with:
+          context: ./php7.2/Dockerfile-cli
+          push: true
+          tags: |
+            frxyt/php-dev:7.2-cli
+            frxyt/php-dev:7.2-cli-buster
+      - name: Build and push - frxyt/php-dev:7.2-fpm
+        uses: docker/build-push-action@v2
+        with:
+          context: ./php7.2/Dockerfile-fpm
+          push: true
+          tags: |
+            frxyt/php-dev:7.2-fpm
+            frxyt/php-dev:7.2-fpm-buster
