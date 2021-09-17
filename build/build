@@ -173,7 +173,7 @@ php -m
 composer -V
 pdepend --version
 [[ "${FRX_PHP_VERSION}" =~ ^(7.[34])|(8.) ]] && phpcpd --version
-[[ "${FRX_PHP_VERSION}" =~ ^(5.6)|(7.) ]] && php-cs-fixer -V
+[[ "${FRX_PHP_VERSION}" =~ ^(5.6)|(7.)|(8.) ]] && php-cs-fixer -V
 phpmd --version
 phpmetrics --version
 [[ "${FRX_PHP_VERSION}" =~ ^(7.[1234])|(8.) ]] && phpstan --version
