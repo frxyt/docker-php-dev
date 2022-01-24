@@ -146,7 +146,7 @@ fi
 cp $(ls -r1 --color=never /usr/local/bin/phpunit* | head -1) /usr/local/bin/phpunit
 
 # Install Node.js & Yarn
-curl -sL https://deb.nodesource.com/setup_10.x | bash -
+curl -sL https://deb.nodesource.com/setup_16.x | bash -
 curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null
 echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
 DEBIAN_FRONTEND=noninteractive apt-get update
