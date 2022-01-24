@@ -6,8 +6,8 @@ on:
       - master
     paths:
       - .github/workflows/build-8.0.yml
-      - ./build/**
-      - ./php8.0/**
+      - build/**
+      - php8.0/**
 
 jobs:
   build-docker-php80:

@@ -6,8 +6,8 @@ on:
       - master
     paths:
       - .github/workflows/build-7.4.yml
-      - ./build/**
-      - ./php7.4/**
+      - build/**
+      - php7.4/**
 
 jobs:
   build-docker-php74:
