@@ -57,18 +57,20 @@ EOL
 fi
 
 # Install XHProf
-if [[ "${FRX_PHP_VERSION}" =~ ^7. ]]; then
-    curl -sSL https://github.com/tideways/php-xhprof-extension/releases/download/v5.0.2/tideways-xhprof_5.0.2_amd64.deb -o tideways-xhprof_amd64.deb
-    dpkg -i tideways-xhprof_amd64.deb
-    apt-get install -f
-    rm -f tideways-xhprof_amd64.deb
-    echo "extension=/usr/lib/tideways_xhprof/tideways_xhprof-${FRX_PHP_VERSION:0:3}.so" > /usr/local/etc/php/conf.d/zz-frx-tideways-xhprof.ini
-    cat >> /usr/local/etc/php/conf.d/zz-frx-tideways-xhprof.ini <<'EOL'
+if [[ "$(uname -m)" = 'x86_64' ]]; then
+    if [[ "${FRX_PHP_VERSION}" =~ ^7. ]]; then
+        curl -sSL https://github.com/tideways/php-xhprof-extension/releases/download/v5.0.2/tideways-xhprof_5.0.2_amd64.deb -o tideways-xhprof_amd64.deb
+        dpkg -i tideways-xhprof_amd64.deb
+        apt-get install -f
+        rm -f tideways-xhprof_amd64.deb
+        echo "extension=/usr/lib/tideways_xhprof/tideways_xhprof-${FRX_PHP_VERSION:0:3}.so" > /usr/local/etc/php/conf.d/zz-frx-tideways-xhprof.ini
+        cat >> /usr/local/etc/php/conf.d/zz-frx-tideways-xhprof.ini <<'EOL'
 tideways_xhprof.clock_use_rdtsc=${FRX_PHP_TIDEWAYS_XHPROF_CLOCK_USE_RDTSC}
 EOL
-elif [[ "${FRX_PHP_VERSION}" =~ ^5.6 ]]; then
-    pecl install xhprof-0.9.4
-    docker-php-ext-enable xhprof
+    elif [[ "${FRX_PHP_VERSION}" =~ ^5.6 ]]; then
+        pecl install xhprof-0.9.4
+        docker-php-ext-enable xhprof
+    fi
 fi
 
 # Enable logs for php-fpm
