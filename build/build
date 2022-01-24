@@ -99,7 +99,7 @@ curl -sSL https://cs.symfony.com/download/php-cs-fixer-v2.phar -o /usr/local/bin
 chmod a+x /usr/local/bin/php-cs-fixer
 
 # Install PHP_Depend
-curl -sSL https://github.com/pdepend/pdepend/releases/latest/download/pdepend.phar -o /usr/local/bin/pdepend
+curl -sSL https://github.com/pdepend/pdepend/releases/download/2.10.0/pdepend.phar -o /usr/local/bin/pdepend
 chmod a+x /usr/local/bin/pdepend
 
 # Install PHPMD
