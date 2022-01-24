@@ -145,14 +145,12 @@ if [[ "${FRX_PHP_VERSION}" =~ ^7.([34])|(8.) ]]; then
 fi
 cp $(ls -r1 --color=never /usr/local/bin/phpunit* | head -1) /usr/local/bin/phpunit
 
-# Install Node.js & Yarn
+# Install Node.js & Enable Corepack
 curl -sL https://deb.nodesource.com/setup_16.x | bash -
-curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null
-echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends \
-    nodejs \
-    yarn
+    nodejs
+corepack enable
 
 # Enable some configuration for Apache with environment variables
 if [ -f /etc/apache2/sites-enabled/000-default.conf -a -f /etc/apache2/envvars ]; then
