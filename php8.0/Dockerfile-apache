@@ -1,4 +1,4 @@
-FROM php:8.0-apache-buster
+FROM php:8.0-apache-bullseye
 
 LABEL maintainer="Jérémy WALTHER <jeremy@ferox.yt>"
 
@@ -19,8 +19,8 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
     FRX_PHP_XDEBUG_CLIENT_PORT=9003 \
     FRX_PHP_XDEBUG_DISCOVER_CLIENT_HOST=false \
     FRX_PHP_XDEBUG_MAX_NESTING_LEVEL=-1 \
-    FRX_PHP_XDEBUG_MODE=debug \
-    FRX_PHP_XDEBUG_START_WITH_REQUEST=yes \
+    FRX_PHP_XDEBUG_MODE=off \
+    FRX_PHP_XDEBUG_START_WITH_REQUEST=default \
     FRX_SCRIPT_START=
 
 COPY ./build ./Dockerfile ./LICENSE ./README.md  /frx/

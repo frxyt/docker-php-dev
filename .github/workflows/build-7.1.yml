@@ -8,6 +8,7 @@ on:
       - .github/workflows/build-7.1.yml
       - build/**
       - php7.1/**
+  workflow_dispatch:
 
 jobs:
   build-docker-php71:

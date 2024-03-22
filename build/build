@@ -97,7 +97,12 @@ if [[ "${FRX_PHP_VERSION}" =~ ^(7.[34])|(8.) ]]; then
 fi
 
 # Install PHP CS Fixer
-curl -sSL https://cs.symfony.com/download/php-cs-fixer-v2.phar -o /usr/local/bin/php-cs-fixer
+if [[ "${FRX_PHP_VERSION}" =~ ^(5.6)|(7.[1234])|(8.0) ]]; then
+    curl -sSL https://cs.symfony.com/download/php-cs-fixer-v2.phar -o /usr/local/bin/php-cs-fixer
+fi
+if [[ "${FRX_PHP_VERSION}" =~ ^8.[123] ]]; then
+    curl -sSL https://cs.symfony.com/download/php-cs-fixer-v3.phar -o /usr/local/bin/php-cs-fixer
+fi
 chmod a+x /usr/local/bin/php-cs-fixer
 
 # Install PHP_Depend
@@ -112,7 +117,7 @@ chmod a+x /usr/local/bin/phpmd
 if [[ "${FRX_PHP_VERSION}" =~ ^5.6 ]]; then
     curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/download/v2.3.2/phpmetrics.phar -o /usr/local/bin/phpmetrics
 else
-    curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/latest/download/phpmetrics.phar -o /usr/local/bin/phpmetrics
+    curl -sSL https://github.com/phpmetrics/PhpMetrics/releases/download/v2.8.1/phpmetrics.phar -o /usr/local/bin/phpmetrics
 fi
 chmod a+x /usr/local/bin/phpmetrics
 

@@ -1,4 +1,4 @@
-FROM php:8.0-fpm-bullseye
+FROM php:8.2-apache-bullseye
 
 LABEL maintainer="Jérémy WALTHER <jeremy@ferox.yt>"
 
@@ -9,7 +9,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
     FRX_APT_GET_INSTALL= \
     FRX_COMPOSER_VENDOR_CACHE_ENABLE=0 \
     FRX_COMPOSER_VENDOR_CACHE_PATH=vendor \
-    FRX_DOCKER_FROM=php:8.0-fpm \
+    FRX_DOCKER_FROM=php:8.0-apache \
     FRX_PECL_INSTALL= \
     FRX_PHP_EXT_CONFIGURE= \
     FRX_PHP_EXT_ENABLE= \

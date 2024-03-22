@@ -1,4 +1,4 @@
-FROM php:7.4-apache-buster
+FROM php:7.4-apache-bullseye
 
 LABEL maintainer="Jérémy WALTHER <jeremy@ferox.yt>"
 

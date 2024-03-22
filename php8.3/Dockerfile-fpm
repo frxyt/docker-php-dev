@@ -1,4 +1,4 @@
-FROM php:8.0-fpm-bullseye
+FROM php:8.3-fpm-bullseye
 
 LABEL maintainer="Jérémy WALTHER <jeremy@ferox.yt>"
 

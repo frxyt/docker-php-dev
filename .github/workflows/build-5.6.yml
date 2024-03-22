@@ -8,6 +8,7 @@ on:
       - .github/workflows/build-5.6.yml
       - build/**
       - php5.6/**
+  workflow_dispatch:
 
 jobs:
   build-docker-php56:

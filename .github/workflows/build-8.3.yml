@@ -1,17 +1,17 @@
-name: Build Docker images for PHP 7.0
+name: Build Docker images for PHP 8.3
 
 on:
   push:
     branches:
       - master
     paths:
-      - .github/workflows/build-7.0.yml
+      - .github/workflows/build-8.3.yml
       - build/**
-      - php7.0/**
+      - php8.3/**
   workflow_dispatch:
 
 jobs:
-  build-docker-php70:
+  build-docker-php80:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -24,35 +24,35 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      # PHP 7.0
-      - name: Build and push - frxyt/php-dev:7.0-apache
+      # PHP 8.3
+      - name: Build and push - frxyt/php-dev:8.3-apache
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./php7.0/Dockerfile-apache
+          file: ./php8.3/Dockerfile-apache
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            frxyt/php-dev:7.0
-            frxyt/php-dev:7.0-apache
-            frxyt/php-dev:7.0-apache-buster
-      - name: Build and push - frxyt/php-dev:7.0-cli
+            frxyt/php-dev:8.3
+            frxyt/php-dev:8.3-apache
+            frxyt/php-dev:8.3-apache-bullseye
+      - name: Build and push - frxyt/php-dev:8.3-cli
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./php7.0/Dockerfile-cli
+          file: ./php8.3/Dockerfile-cli
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            frxyt/php-dev:7.0-cli
-            frxyt/php-dev:7.0-cli-buster
-      - name: Build and push - frxyt/php-dev:7.0-fpm
+            frxyt/php-dev:8.3-cli
+            frxyt/php-dev:8.3-cli-bullseye
+      - name: Build and push - frxyt/php-dev:8.3-fpm
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./php7.0/Dockerfile-fpm
+          file: ./php8.3/Dockerfile-fpm
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            frxyt/php-dev:7.0-fpm
-            frxyt/php-dev:7.0-fpm-buster
+            frxyt/php-dev:8.3-fpm
+            frxyt/php-dev:8.3-fpm-bullseye

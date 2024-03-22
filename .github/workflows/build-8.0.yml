@@ -8,6 +8,7 @@ on:
       - .github/workflows/build-8.0.yml
       - build/**
       - php8.0/**
+  workflow_dispatch:
 
 jobs:
   build-docker-php80:
@@ -34,7 +35,7 @@ jobs:
           tags: |
             frxyt/php-dev:8.0
             frxyt/php-dev:8.0-apache
-            frxyt/php-dev:8.0-apache-buster
+            frxyt/php-dev:8.0-apache-bullseye
       - name: Build and push - frxyt/php-dev:8.0-cli
         uses: docker/build-push-action@v2
         with:
@@ -44,7 +45,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: |
             frxyt/php-dev:8.0-cli
-            frxyt/php-dev:8.0-cli-buster
+            frxyt/php-dev:8.0-cli-bullseye
       - name: Build and push - frxyt/php-dev:8.0-fpm
         uses: docker/build-push-action@v2
         with:
@@ -54,4 +55,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: |
             frxyt/php-dev:8.0-fpm
-            frxyt/php-dev:8.0-fpm-buster
+            frxyt/php-dev:8.0-fpm-bullseye
